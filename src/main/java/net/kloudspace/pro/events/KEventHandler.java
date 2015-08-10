@@ -80,13 +80,13 @@ public class KEventHandler {
 						}
 					}
 					if(event.block.getMaterial() == Material.wood) {
-						if(player.inventory.getCurrentItem() != null) {
+						if(player.inventory.getCurrentItem() == null) {
+							event.drops.clear();
+						}else {
 							Item tool = player.inventory.getCurrentItem().getItem();
-							if(!(tool instanceof ItemAxe) && tool != Items.flint) {
+							if(!(tool instanceof ItemAxe) || tool != Items.flint) {
 								event.drops.clear();
 							}
-						} else {
-							event.drops.clear();
 						}
 					}
 				}
@@ -106,15 +106,10 @@ public class KEventHandler {
 		if(!event.entity.worldObj.isRemote && event.entityPlayer != null) {
 			if(event.block.getMaterial() == Material.wood) {
 				if(event.entityPlayer.inventory.getCurrentItem() != null) {
-					if(!(event.entityPlayer.inventory.getCurrentItem().getItem() instanceof ItemAxe)) {
-						event.newSpeed = event.originalSpeed/10;
-					} else if(event.entityPlayer.inventory.getCurrentItem().getItem() == Items.flint) {
-						event.newSpeed = event.originalSpeed*2;
-					}  else {
-						event.newSpeed = event.originalSpeed;
+					Item tool = event.entityPlayer.inventory.getCurrentItem().getItem();
+					if(tool instanceof ItemAxe || tool == Items.flint) {
+						event.newSpeed = 10.0F;
 					}
-				} else {
-					event.newSpeed = event.originalSpeed/10;
 				}
 			}
 		}
